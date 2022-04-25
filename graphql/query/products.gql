@@ -1,0 +1,14 @@
+query Products($status: Boolean) {
+  products(where: {status: {_eq: $status}}) {
+    id_data
+    jumlahBarang
+    kodeBarang
+    namaBarang
+    status
+  }
+}
+query selectProduct($kode: String) {
+  products(where: {_and: {kodeBarang: {_eq: $kode}}}) {
+    id_data
+  }
+}

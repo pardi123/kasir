@@ -1,0 +1,9 @@
+mutation MyMutation($jumlah: Number,$kode: String,$nama: String , $status: Boolean ) {
+  insert_products(objects: {jumlahBarang: $jumlah, kodeBarang: $kode, namaBarang: $nama, status: $status}) {
+    returning {
+      jumlahBarang
+      kodeBarang
+      namaBarang
+      status
+    }
+  }
