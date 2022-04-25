@@ -4,19 +4,36 @@
             <v-col cols="12" md="12">
                 <material-card color="green" text="Products" title="Products">
     <v-alert
+            dense
+            outlined
+            type="error"
+            :value="errorAlert"
+    >
+    <v-row justify="end">
+
+            <v-col cols="11">
+                Data Telah <strong>Ada</strong> 
+
+            </v-col>
+            <v-col cols="1">
+                    <v-icon class="text--primary cursor-pointer" @click="alertErrorClose">mdi-close</v-icon>
+            </v-col>
+    </v-row>
+    </v-alert>
+    <v-alert
       dense
       text
       type="success"
-      :value="alertError"
+      :value="successAlert"
     >
     <v-row justify="end">
 
         <v-col cols="11">
-            Berhasil Menambah <strong>Product</strong> prop and 
+            Berhasil Menambah <strong>Product</strong> 
 
         </v-col>
         <v-col cols="1">
-                <v-icon class="text--primary cursor-pointer" @click="alertErrorClose">mdi-close</v-icon>
+                <v-icon class="text--primary cursor-pointer" >mdi-close</v-icon>
         </v-col>
     </v-row>
     </v-alert>
@@ -70,6 +87,19 @@
                                             v-model.number="jumlahBarang"
                                             label="Jumlah Barang"
                                         ></v-text-field>
+                                        <v-text-field
+                                            type="number"
+                                            v-model.number="hargaBarang"
+                                            label="Harga Barang"
+                                        >
+                                     
+                                        </v-text-field>
+                                             <v-select
+                                            :items="satuan"
+                                            label="Satuan"
+                                            v-model="valueSatuan"
+                                            dense
+                                        ></v-select>
                                         <v-btn
                                             class="mr-4"
                                             color="green"
@@ -115,13 +145,10 @@
                         :loading="dataLoading"  
                          loading-text="Loading... Please wait"
                     >
-                            <template v-slot:item.no="{item}">
-                                {{ i+1 }}
-
-                            </template>
+                       
                         <template v-slot:item.Action="{item}">
                                 <v-icon class="mr-2 cursor-pointer" small >mdi-pencil</v-icon>
-                                <v-icon small class="cursor-pointer">mdi-delete</v-icon>
+                                <v-icon small class="cursor-pointer" @click="deleteProduct(item.id_data)" >mdi-delete</v-icon>
 
                         </template>
 
@@ -143,29 +170,33 @@ export default {
         dataLoading() {
             return this.$store.state.products.dataLoading
         },
-        alertError(){
+        successAlert(){
             return this.$store.state.products.alert
+        },
+        errorAlert(){
+            return this.$store.state.products.errorAlert
         }
     },
     data: () => ({
+        disabled: false,
         dialog:false,
         valid: true,
         kodeBarang: '',
         namaBarang: '',
         jumlahBarang: 0,
+        hargaBarang: 0,
         // table
         search: '',
+        valueSatuan: '',
+        satuan: ['Dus','pcs','lusin',],
         i: 0,
         headers: [
-            {
-                text: 'No',
-                align: 'start',
-                filterable: false,
-                value: 'no',
-            },
+         
             { text: 'Kode Barang', value: 'kodeBarang'},
             { text: 'Nama Barang', value: 'namaBarang' },
             { text: 'Jumlah Barang', value: 'jumlahBarang'},
+            {text: 'Harga Barang',value: 'hargaBarang'},
+            {text: 'Satuan', value: 'satuan'},
             {text:'Action',value: 'Action',sortable:false,},
         ],
         select: {stock: 'Tersedia', status: true},
@@ -179,7 +210,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('products', ['fecthProducts','addProduct','closeAlert']),
+        ...mapActions('products', ['fecthProducts','CheckProduct','closeAlertError','deleteProducts']),
         resetForms(){
             this.kodeBarang = ''
             this.namaBarang = ''
@@ -196,12 +227,24 @@ export default {
                 kode: this.kodeBarang,
                 nama: this.namaBarang,
                 jumlah: this.jumlahBarang,
+                harga: this.hargaBarang,
+                satuan: this.valueSatuan,
             }
-            this.addProduct(product);
+            this.CheckProduct(product);
+            this.kodeBarang = ''
+            this.namaBarang = ''
+            this.jumlahBarang = 0
+            this.dialog = false;
         },
        alertErrorClose(){
-           this.closeAlert(false)
-       }
+           
+           this.closeAlertError(false)
+       },
+       deleteProduct(id){
+           this.disable = true
+           this.deleteProducts(id);
+       },
+     
 
     }
 }

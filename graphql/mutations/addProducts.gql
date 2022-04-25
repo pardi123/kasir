@@ -1,9 +1,20 @@
-mutation MyMutation($jumlah: Number,$kode: String,$nama: String , $status: Boolean ) {
-  insert_products(objects: {jumlahBarang: $jumlah, kodeBarang: $kode, namaBarang: $nama, status: $status}) {
+mutation addProduct($jumlah: Int,$nama: String,$kode: String,$status:Boolean,$harga: Int,$satuan: String) {
+  insert_products(objects: {jumlahBarang: $jumlah, kodeBarang: $kode, namaBarang: $nama, status: $status,hargaBarang: $harga,satuan:$satuan}) {
     returning {
-      jumlahBarang
-      kodeBarang
-      namaBarang
-      status
+      id_data
+    jumlahBarang
+    kodeBarang
+    namaBarang
+    hargaBarang
+    satuan
+    status
     }
   }
+}
+mutation deleteProduct($id: Int) {
+  delete_products(where: {id_data: {_eq: $id}}) {
+    returning {
+      id_data
+    }
+  }
+}

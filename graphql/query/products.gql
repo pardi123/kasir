@@ -4,6 +4,8 @@ query Products($status: Boolean) {
     jumlahBarang
     kodeBarang
     namaBarang
+    hargaBarang
+    satuan
     status
   }
 }

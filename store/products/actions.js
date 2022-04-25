@@ -20,7 +20,7 @@ export default {
         })
     },
 
-    async addProduct(store,param){
+    async CheckProduct(store,param){
         let client = this.app.apolloProvider.defaultClient
         return new Promise((resolve, reject) => {
             client
@@ -31,13 +31,53 @@ export default {
                     }
                 }) .then(response => {
                     if (response.data.products.length > 0) {
-                        store.commit('setAlert',true)
+                        store.commit('setAlertError',true)
                     }
+                    else{
+                        store.dispatch('addProduct',param)   
+                    }
+                }) .catch(error => {
+                    console.error(error)
                 })
         })    
     },
-    
-    closeAlert(store,param){
-        store.commit('setAlert',param)
-    }
+    async addProduct(store,param){
+        let client = this.app.apolloProvider.defaultClient
+        client 
+            .mutate({
+                mutation: require('~/graphql/mutations/addProducts.gql').addProduct,
+                variables: {
+                    jumlah: param.jumlah,
+                    kode: param.kode,
+                    nama: param.nama,
+                    status: true,
+                    harga: param.harga,
+                    satuan: param.satuan,
+                }
+            }) .then(response => {
+                store.commit('setNewProduct',response.data.insert_products.returning[0])
+            }) .catch(error => {
+                console.error(error)
+            })
+    },
+    deleteProducts(store,param){
+        let client = this.app.apolloProvider.defaultClient
+        client
+            .mutate({
+                mutation: require('~/graphql/mutations/addProducts.gql').deleteProduct,
+                variables: {
+                    id: param
+                }
+            }) .then(response => {
+                store.commit('setProduct',response.data.delete_products.returning[0].id_data)
+                console.log(response.data.delete_products.returning[0].id_data)
+
+            }) .catch(error => {
+                console.error(error)
+            })
+    },
+    closeAlertError(store,param){
+        store.commit('closeAlertError',param)
+    },
+
 }
