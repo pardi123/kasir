@@ -1,0 +1,13 @@
+query getkatalog($date : String) {
+  product_sold(where: {date: {_eq: $date}}) {
+    id_sold
+    id_keranjang
+    kodeBarang
+    namaBarang
+    hargaBarang
+    jumlahBarang
+    jumlahHarga
+    satuan
+    date
+  }
+}

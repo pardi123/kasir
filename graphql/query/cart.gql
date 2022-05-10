@@ -1,0 +1,22 @@
+query checkCart($kode: String) {
+  keranjang(where: {kodeBarang: {_eq: $kode}, _and: {status: {_eq: false}}}) {
+    hargaBarang
+    id_keranjang
+    jumlahBarang
+    kodeBarang
+    namaBarang
+    satuan
+    status
+  }
+}
+query Carts {
+  keranjang(where: {status: {_eq: false}}) {
+    id_keranjang
+    kodeBarang
+    namaBarang
+    hargaBarang
+    jumlahBarang
+    satuan
+    status
+  }
+}

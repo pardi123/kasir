@@ -18,3 +18,56 @@ mutation deleteProduct($id: Int) {
     }
   }
 }
+mutation updateProduct($id: Int,$nama: String,$harga: Int,$kode: String,$satuan:String) {
+  update_products(where: {id_data: {_eq: $id}}, _set: {hargaBarang: $harga, kodeBarang: $kode, satuan: $satuan,namaBarang: $nama}) {
+    returning {
+    id_data
+    jumlahBarang
+    kodeBarang
+    namaBarang
+    hargaBarang
+    satuan
+    status
+    }
+  }
+}
+
+mutation plusProduct($id: Int, $jumlah: Int) {
+  update_products(_set: {jumlahBarang: $jumlah}, where: {id_data: {_eq: $id}}) {
+    returning {
+    id_data
+    jumlahBarang
+    kodeBarang
+    namaBarang
+    hargaBarang
+    satuan
+    status
+    }
+  }
+}
+mutation minusProduct($kode: String, $jumlah: Int) {
+  update_products(_set: {jumlahBarang: $jumlah}, where: {kodeBarang: {_eq: $kode}}) {
+    returning {
+    id_data
+    jumlahBarang
+    kodeBarang
+    namaBarang
+    hargaBarang
+    satuan
+    status
+    }
+  }
+}
+mutation flaseProduct($id: Int,$jumlah: Int,$status: Boolean) {
+  update_products(where: {id_data: {_eq: $id}}, _set: {jumlahBarang: $jumlah, status: $status}) {
+    returning {
+      id_data
+      jumlahBarang
+      kodeBarang
+      namaBarang
+      hargaBarang
+      satuan
+      status
+    }
+  }
+}

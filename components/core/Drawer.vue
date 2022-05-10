@@ -68,9 +68,19 @@ export default {
                 text: 'Dashboard',
             },
             {
+                to: '/katalogPenjualan',
+                icon: 'mdi-store',
+                text: 'Katalog Penjualan',
+            },
+            {
                 to: '/products',
                 icon: 'mdi-store',
                 text: 'Product',
+            },
+            {
+                to: '/kasir',
+                icon: 'mdi-cash-register',
+                text: 'Kasir',
             },
             {
                 to: '/user-profile',
